@@ -1,0 +1,130 @@
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        p {
+            margin-top: 0px;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            background-color: #2d2d2d; /* 深色背景 */
+            color: #f8f8f2;            /* 浅色文字 */
+            font-family: monospace; /* 等宽字体 */
+            font-size: 14px;          /* 字体大小 */
+            line-height: 1.5;         /* 行高 */
+            padding: 10px;            /* 内边距 */
+            border: 1px solid #444;   /* 边框 */
+            border-radius: 5px;       /* 圆角 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 阴影 */
+            resize: none;             /* 禁用拖动调整大小 */
+            white-space: pre; /* 禁止自动换行 */
+            overflow-x: auto;         /* 横向滚动条 */
+        }
+        button {
+            border-radius: 10px;      /* 圆角边框 */
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        /* 模拟 Markdown 风格的代码块 */
+        pre {
+            background-color: #f5f2f0; /* 类似 Markdown 的浅灰背景 */
+            padding-top: 15px;         /* 上 15px */
+            padding-right: 15px;      /* 右 15px */
+            padding-bottom: -10px;     /* 下 5px */
+            padding-left: 15px;       /* 左 15px */
+            border-radius: 5px;      /* 圆角边框 */
+            font-size: 14px;         /* 字体大小 */
+            font-family: "Courier New", Courier, monospace; /* 等宽字体 */
+            line-height: 1.4;        /* 行高 */
+            overflow-x: auto;        /* 添加水平滚动条 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+        }
+        code {
+            background: none; /* 取消单行代码块的背景 */
+            padding: 0;       /* 取消内边距 */
+            color: #d6336c;   /* 可选：代码内容的颜色 */
+        }
+    </style>
+</head>
+<body>
+    <p style="margin-top: -30px;">Replace these lines in the input text with the grades and credits you expected. Note that you need to match the credits and grades correctly. </p> <p>For example: </p>
+    <pre>
+<code># 示例数据
+grades = ["B-", "B+", "A", "A", "A", "A-", "A-"]
+credits = [1,   4,   2,   3,   4,    4,    4]</code>
+    </pre>
+    <p>Modifie the code below:</p>
+    <textarea id="code" placeholder="Enter your Python code here..."></textarea><br>
+    <button onclick="runCode()">Run Code</button>
+    <h3>Output:</h3>
+    <pre id="output"></pre>
+    <!-- 脚本移到这里 -->
+    <script>
+        async function runCode() {
+            const code = document.getElementById('code').value;
+            const output = document.getElementById('output');
+            output.textContent = "Running...";
+            try {
+                const response = await fetch('http://jimzhou.cn:5000/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: code_pre + code + code_aft })
+                });
+                const result = await response.json();
+                output.textContent = result.output || result.error;
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+            const code_pre = `# 绩点计算公式
+def calculate_gpa_from_grade(grade):
+    grade_to_gpa = {
+        "A+": 4.00, "A": 3.94, "A-": 3.85,
+        "B+": 3.73, "B": 3.55, "B-": 3.32,
+        "C+": 3.09, "C": 2.78, "C-": 2.42,
+        "D+": 2.08, "D": 1.63, "D-": 1.15,
+        "F": 0.00
+    }
+    return grade_to_gpa.get(grade.upper(), None)
+# 主函数
+def calculate_gpa(grades, credits):
+    if len(grades) != len(credits):
+        raise ValueError("等级和学分的列表长度必须一致！")
+    total_points = 0  # 总绩点
+    total_credits = 0  # 总学分
+    for grade, credit in zip(grades, credits):
+        gpa = calculate_gpa_from_grade(grade)
+        if gpa is None:
+            raise ValueError(f"无效的等级：{grade}")
+        total_points += gpa * credit
+        total_credits += credit
+    if total_credits == 0:
+        return 0.0  # 防止除以零
+    return round(total_points / total_credits, 2)
+# 示例数据`
+            const code_aft = `# 计算 GPA
+try:
+    gpa = calculate_gpa(grades, credits)
+    print(f"总 GPA: {gpa}")
+except ValueError as e:
+    print(e)`
+        window.onload = function() {
+            const data_example = `# 请以 Python List 的格式输入你期待的成绩和学分
+grades = ["B-", "B+", "A", "A", "A", "A-", "A-"]
+credits = [1,    4,    2,   3,   4,   4,    4]`
+            // 设置textarea的值
+            document.getElementById('code').value = data_example;
+        };
+    </script>
+</body>
