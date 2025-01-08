@@ -16,3 +16,6 @@ You should see output like this
 ```
 总 GPA: 3.84
 ```
+
+## Online Calculator
+Please visite my blog[http://jimzhou.cn/index.php/run-python] to run the code and calculate GPA online.
