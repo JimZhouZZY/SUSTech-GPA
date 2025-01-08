@@ -2,7 +2,7 @@
 A simple python SUSTech GPA calculator.
 
 ## Usage
-Replace$ these lines with the grades and credits you expected. Note that you need to match the credits and grades correctly.
+Replace these lines with the grades and credits you expected. Note that you need to match the credits and grades correctly.
 ```python
 # 示例数据
 grades = ["B-", "B+", "A", "A", "A", "A-", "A-"]
